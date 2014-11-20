@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="CustomTheme" parent="android:Theme.Holo">
-        <item name="android:icon">@android:drawable/btn_star_big_on</item>
-        <item name="android:actionOverflowButtonStyle">@style/Overflow</item>
+    <style name="CustomTheme" parent="android:Theme.Holo.Light">
+        <item name="android:icon">@android:drawable/btn_star</item>
     </style>
-    <style name="Overflow" parent="android:Theme.Holo">
-        <item name="android:src">@drawable/ic_menu_camera</item>
-    </style>
+
 </resources>

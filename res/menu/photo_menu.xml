@@ -2,5 +2,7 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:title="Take a photo"
-          android:id="@+id/camera_icon"/>
+          android:id="@+id/camera_icon"
+          android:showAsAction="always"
+          android:icon="@drawable/ic_menu_camera"/>
 </menu>
