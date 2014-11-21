@@ -4,5 +4,6 @@
     <item android:title="Take a photo"
           android:id="@+id/camera_icon"
           android:showAsAction="always"
-          android:icon="@drawable/ic_menu_camera"/>
+          android:icon="@drawable/ic_menu_camera"
+          />
 </menu>
