@@ -1,10 +1,9 @@
 package com.example.DailySelfie;
 
-import android.app.Activity;
+import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -14,15 +13,14 @@ import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.ImageView;
+import android.widget.ListView;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-
-public class MainActivity extends Activity {
+public class MainActivity extends ListActivity {
     /**
      * Called when the activity is first created.
      */
@@ -32,34 +30,37 @@ public class MainActivity extends Activity {
     private static final String JPG_PREFIX = "IMG_";
     private static final String JPG_SUFFIX = ".jpg";
     private static final String IMAGE_VISIBILITY_KEY = "imageviewvisibility";
-    private static String IMAGE_DIRECTORY_NAME = "Selfie";
-    private static final int MEDIA_TYPE_IMAGE = 1;
-    private static final int CAMERA_CAPTURE_IMAGE_REQUEST_CODE = 100;
-    
+//    private static String IMAGE_DIRECTORY_NAME = "Selfie";
+//    private static final int MEDIA_TYPE_IMAGE = 1;
+//    private static final int CAMERA_CAPTURE_IMAGE_REQUEST_CODE = 100;
 
     //fields
     private Uri fileUri;
-    private SelfieAdapter selfieAdapter;
+//    private SelfieAdapter selfieAdapter;
     private Bitmap selfieBitmap;
-    private ImageView selfieView;
+//    private ImageView selfieView;
     private AlbumStorageDirFactory albumStorageDirFactory = null;
     String selectedImagePath;
-    private Bitmap bitmap;
-    private Intent data;
+//    private Bitmap bitmap;
+//    private Intent data;
     static final int REQUEST_IMAGE_CAPTURE = 1;
     String mName, currentSelfiePath;
     private SharedPreferences sharedPref;
     private SelfieAdapter mAdapter;
-
+    private ListView photoListView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
 
 //        this.selfieView = (ImageView) this.findViewById(R.id.photoView);
 
+        photoListView = getListView();
+        mAdapter = new SelfieAdapter(getApplicationContext());
+
         init();
+
+        setListAdapter(mAdapter);
     }
 
     private void init() {
@@ -99,10 +100,7 @@ public class MainActivity extends Activity {
                 mAdapter.add(item);
 
             }
-
         }
-
-
     }
 
     @Override
@@ -118,7 +116,11 @@ public class MainActivity extends Activity {
         String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String selfieFileName = JPG_PREFIX + timestamp + "_";
         File albumSelfie = getAlbumDir();
-        File fileSelfie = File.createTempFile(selfieFileName, JPG_SUFFIX, albumSelfie);
+        File fileSelfie = File.createTempFile(
+                selfieFileName,
+                JPG_SUFFIX,
+                albumSelfie
+        );
         selectedImagePath = fileSelfie.getAbsolutePath();
         mName = timestamp;
         return fileSelfie;
@@ -148,7 +150,7 @@ public class MainActivity extends Activity {
 
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        File f = null;
+        File f;
 
         try {
             f = setUpSelfieFile();
@@ -187,16 +189,16 @@ public class MainActivity extends Activity {
     }
 //getPath method
 
-    public String getPath(Uri uri) {
-        String[] projection = { MediaStore.MediaColumns.DATA };
-        Cursor cursor = managedQuery(uri, projection, null, null, null);
-        if (cursor != null) {
-            int column_index = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
-            cursor.moveToFirst();
-            return cursor.getString(column_index);
-        } else
-            return null;
-    }
+//    public String getPath(Uri uri) {
+//        String[] projection = { MediaStore.MediaColumns.DATA };
+//        Cursor cursor = managedQuery(uri, projection, null, null, null);
+//        if (cursor != null) {
+//            int column_index = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
+//            cursor.moveToFirst();
+//            return cursor.getString(column_index);
+//        } else
+//            return null;
+//    }
 
 //decodeFile method
 
