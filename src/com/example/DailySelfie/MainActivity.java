@@ -13,6 +13,8 @@ import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 
@@ -41,23 +43,41 @@ public class MainActivity extends ListActivity {
     private ImageView selfieView;
     private SharedPreferences sharedPref;
     private SelfieAdapter mAdapter;
-    private ListView photoListView;
     private final int targetHeight = 100;
     private final int targetWid = 100;
     private int scaleFactor = 1;
     private int height;
     private int outWidth;
+    private ListView selfieListView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.selfieView = (ImageView) this.findViewById(R.id.photoView);
-        photoListView = getListView();
+        selfieListView = getListView();
         mAdapter = new SelfieAdapter(getApplicationContext());
 
         init();
 
         setListAdapter(mAdapter);
+
+        selfieListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                try {
+                    Intent selfieIntent = new Intent();
+                    selfieIntent.setAction(Intent.ACTION_VIEW);
+                    SelfieItem selfie = (SelfieItem) mAdapter.getItem(position);
+                    selfieIntent.setDataAndType(Uri.parse("file://"  + selfie.getText()), "image/*");
+                    startActivity(selfieIntent);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+
+
     }
 
     private void init() {

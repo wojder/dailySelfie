@@ -18,17 +18,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7676e73c-acca-484e-a617-68eabba2a67f" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/DailySelfie/com/example/DailySelfie/AlbumStorageDirFactory.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/DailySelfie/com/example/DailySelfie/BaseAlbumDirFactory.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/DailySelfie/com/example/DailySelfie/SelifeList.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/example/DailySelfie/AlbumStorageDirFactory.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/example/DailySelfie/BaseAlbumDirFactory.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/example/DailySelfie/SelifeList.java" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/DailySelfie/DailySelfie.apk" afterPath="$PROJECT_DIR$/out/production/DailySelfie/DailySelfie.apk" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/DailySelfie/DailySelfie.unaligned.apk" afterPath="$PROJECT_DIR$/out/production/DailySelfie/DailySelfie.unaligned.apk" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/DailySelfie/com/example/DailySelfie/MainActivity.class" afterPath="$PROJECT_DIR$/out/production/DailySelfie/com/example/DailySelfie/MainActivity.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/example/DailySelfie/MainActivity.java" afterPath="$PROJECT_DIR$/src/com/example/DailySelfie/MainActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/main.xml" afterPath="$PROJECT_DIR$/res/layout/main.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="DailySelfie.iws" />
@@ -68,10 +58,12 @@
       <file leaf-file-name="MainActivity.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/example/DailySelfie/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="1.1275167" vertical-offset="306" max-vertical-offset="4518">
-              <caret line="45" column="38" selection-start-line="45" selection-start-column="38" selection-end-line="45" selection-end-column="38" />
+            <state vertical-scroll-proportion="0.63380283" vertical-offset="1098" max-vertical-offset="4878">
+              <caret line="76" column="0" selection-start-line="76" selection-start-column="0" selection-end-line="76" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#2007#2661#0" expanded="true" />
+                <element signature="e#2660#2661#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -242,10 +234,6 @@
               <option name="myItemId" value="res" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="values" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -280,20 +268,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="layout" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="DailySelfie" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="DailySelfie" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="res" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -654,12 +628,12 @@
       <workItem from="1417134233583" duration="7806000" />
       <workItem from="1417197482650" duration="981000" />
       <workItem from="1417198729235" duration="104000" />
-      <workItem from="1417198859332" duration="11604000" />
+      <workItem from="1417198859332" duration="13470000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="124069000" />
+    <option name="totallyTimeSpent" value="125935000" />
   </component>
   <component name="TodoView" selected-index="3">
     <todo-panel id="selected-file">
@@ -697,7 +671,7 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.35458168" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.35458168" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32934928" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32934928" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.22177956" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
@@ -706,7 +680,7 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32934928" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32802126" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32934928" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
-      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32669324" sideWeight="0.49966422" order="13" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32669324" sideWeight="0.49966422" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25117528" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Memory Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="14" side_tool="true" content_ui="tabs" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="15" side_tool="false" content_ui="tabs" />
@@ -807,6 +781,8 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#2007#2661#0" expanded="true" />
+            <element signature="e#2660#2661#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -860,6 +836,8 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#2007#2661#0" expanded="true" />
+            <element signature="e#2660#2661#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -913,6 +891,8 @@
           <caret line="20" column="50" selection-start-line="20" selection-start-column="50" selection-end-line="20" selection-end-column="50" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#2007#2661#0" expanded="true" />
+            <element signature="e#2660#2661#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1182,10 +1162,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/example/DailySelfie/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.1275167" vertical-offset="306" max-vertical-offset="4518">
-          <caret line="45" column="38" selection-start-line="45" selection-start-column="38" selection-end-line="45" selection-end-column="38" />
+        <state vertical-scroll-proportion="0.63380283" vertical-offset="1098" max-vertical-offset="4878">
+          <caret line="76" column="0" selection-start-line="76" selection-start-column="0" selection-end-line="76" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#2007#2661#0" expanded="true" />
+            <element signature="e#2660#2661#0" expanded="true" />
           </folding>
         </state>
       </provider>
