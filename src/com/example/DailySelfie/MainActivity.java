@@ -13,6 +13,7 @@ import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import java.io.File;
@@ -25,36 +26,32 @@ public class MainActivity extends ListActivity {
      * Called when the activity is first created.
      */
     //constants
-    protected final static String DEBUG_TAG = "MainActivity";
     static final int REQUEST_IMAGE_PHOTO = 1;
+    protected final static String DEBUG_TAG = "MainActivity";
     private static final String JPG_PREFIX = "IMG_";
     private static final String JPG_SUFFIX = ".jpg";
     private static final String IMAGE_VISIBILITY_KEY = "imageviewvisibility";
-//    private static String IMAGE_DIRECTORY_NAME = "Selfie";
-//    private static final int MEDIA_TYPE_IMAGE = 1;
-//    private static final int CAMERA_CAPTURE_IMAGE_REQUEST_CODE = 100;
 
     //fields
-    private Uri fileUri;
-//    private SelfieAdapter selfieAdapter;
-    private Bitmap selfieBitmap;
-//    private ImageView selfieView;
-    private AlbumStorageDirFactory albumStorageDirFactory = null;
-    String selectedImagePath;
-//    private Bitmap bitmap;
-//    private Intent data;
+    String mName, selectedImagePath;
     static final int REQUEST_IMAGE_CAPTURE = 1;
-    String mName, currentSelfiePath;
+    private Uri fileUri;
+    private SelfieAdapter selfieAdapter;
+    private Bitmap selfieBitmap;
+    private ImageView selfieView;
     private SharedPreferences sharedPref;
     private SelfieAdapter mAdapter;
     private ListView photoListView;
+    private final int targetHeight = 100;
+    private final int targetWid = 100;
+    private int scaleFactor = 1;
+    private int height;
+    private int outWidth;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-//        this.selfieView = (ImageView) this.findViewById(R.id.photoView);
-
+        this.selfieView = (ImageView) this.findViewById(R.id.photoView);
         photoListView = getListView();
         mAdapter = new SelfieAdapter(getApplicationContext());
 
@@ -68,37 +65,27 @@ public class MainActivity extends ListActivity {
         sharedPref = getPreferences(Context.MODE_PRIVATE);
         int size = sharedPref.getInt("size", 0);
 
-        if (size >0) {
+        optymalizerChecker(size);
+
+    }
+
+    private void optymalizerChecker(int size) {
+        if (size > 0) {
 
             for (int i =0; i < size; i++) {
 
                 String path = sharedPref.getString(i + "", "");
                 String name  = sharedPref.getString(i + "_Name", "");
 
-                int targetWid = 100;
-                int targetHeight = 100;
-
                 BitmapFactory.Options options = new BitmapFactory.Options();
                 options.inJustDecodeBounds = true;
                 BitmapFactory.decodeFile(path, options);
-                int selfieWid = options.outWidth;
-                int selfieHeight = options.outHeight;
 
-                int scaleFactor = 1;
-                if ((targetWid > 0 || targetHeight > 0 )) {
-
-                    scaleFactor = Math.min(selfieWid/targetWid, selfieHeight/targetHeight);
-
-                }
-
-                options.inJustDecodeBounds = false;
-                options.inSampleSize = scaleFactor;
-                options.inPurgeable = true;
+                decodeHelper(options);
 
                 Bitmap bitmap = BitmapFactory.decodeFile(path, options);
                 SelfieItem item = new SelfieItem(bitmap, path, name);
                 mAdapter.add(item);
-
             }
         }
     }
@@ -108,7 +95,6 @@ public class MainActivity extends ListActivity {
 
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.photo_menu, menu);
-
         return true;
     }
 
@@ -116,22 +102,17 @@ public class MainActivity extends ListActivity {
         String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String selfieFileName = JPG_PREFIX + timestamp + "_";
         File albumSelfie = getAlbumDir();
-        File fileSelfie = File.createTempFile(
-                selfieFileName,
-                JPG_SUFFIX,
-                albumSelfie
-        );
+        File fileSelfie = File.createTempFile(selfieFileName,JPG_SUFFIX,albumSelfie);
         selectedImagePath = fileSelfie.getAbsolutePath();
         mName = timestamp;
         return fileSelfie;
     }
     private File setUpSelfieFile() throws IOException {
 
-        File f = createImageFile();
-        selectedImagePath = f.getAbsolutePath();
+        File setUpselfie = createImageFile();
+        selectedImagePath = setUpselfie.getAbsolutePath();
 
-        return f;
-
+        return setUpselfie;
     }
 
     @Override
@@ -150,16 +131,16 @@ public class MainActivity extends ListActivity {
 
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        File f;
+        File setUpselfie = null;
 
         try {
-            f = setUpSelfieFile();
-            selectedImagePath = f.getAbsolutePath();
-            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
+            setUpselfie = setUpSelfieFile();
+            selectedImagePath = setUpselfie.getAbsolutePath();
+            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(setUpselfie));
 
         } catch (IOException e) {
             e.printStackTrace();
-            f = null;
+            setUpselfie = null;
             selectedImagePath = null;
         }
 
@@ -187,18 +168,7 @@ public class MainActivity extends ListActivity {
         }
 
     }
-//getPath method
 
-//    public String getPath(Uri uri) {
-//        String[] projection = { MediaStore.MediaColumns.DATA };
-//        Cursor cursor = managedQuery(uri, projection, null, null, null);
-//        if (cursor != null) {
-//            int column_index = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
-//            cursor.moveToFirst();
-//            return cursor.getString(column_index);
-//        } else
-//            return null;
-//    }
 
 //decodeFile method
 
@@ -208,30 +178,38 @@ public class MainActivity extends ListActivity {
         options.inJustDecodeBounds = true;
         BitmapFactory.decodeFile(selectedImagePath, options);
 
-        int selfieWid = options.outWidth;
-        int selfieHeight = options.outHeight;
-
-        int scaleFactor = 1;
-        int targetWid = 100;
-        int targetHeight = 100;
-        if ((targetWid > 0) || (targetHeight > 0)) {
-            scaleFactor = Math.min(selfieWid/targetWid, selfieHeight/targetHeight);
-        }
-
-        options.inJustDecodeBounds = false;
-        options.inSampleSize = scaleFactor;
-        options.inPurgeable = true;
+        decodeHelper(options);
 
         Bitmap bitmap = BitmapFactory.decodeFile(selectedImagePath, options);
-        SelfieItem i = new SelfieItem(bitmap, selectedImagePath, mName);
-        mAdapter.add(i);
+        SelfieItem selfieItem = new SelfieItem(bitmap, selectedImagePath, mName);
+        mAdapter.add(selfieItem);
+
+        editorHelper();
+
+}
+
+    private void editorHelper() {
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putInt("size", mAdapter.getCount());
         editor.putString((mAdapter.getCount() - 1) + "", selectedImagePath);
         editor.putString((mAdapter.getCount() - 1) + "_Name", mName);
         editor.commit();
+    }
 
-}
+    private void decodeHelper(BitmapFactory.Options options) {
+        outWidth = options.outWidth;
+        height = options.outHeight;
+
+
+        if ((targetWid > 0) || (targetHeight > 0)) {
+            scaleFactor = Math.min(outWidth / targetWid, height / targetHeight);
+        }
+
+        options.inJustDecodeBounds = false;
+        options.inSampleSize = scaleFactor;
+        options.inPurgeable = true;
+    }
+
     private File getAlbumDir() {
 
         File selfieDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
