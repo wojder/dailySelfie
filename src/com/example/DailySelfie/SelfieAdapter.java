@@ -69,14 +69,15 @@ public class SelfieAdapter extends BaseAdapter {
         holder.name.setText(curr.getName());
 
         return newView;
-
     }
 
     public void add(SelfieItem item) {
-
         selfieItems.add(item);
-
         notifyDataSetChanged();
+    }
 
+    public void delete(int position) {
+        selfieItems.remove(position);
+        notifyDataSetChanged();
     }
 }

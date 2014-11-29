@@ -1,7 +1,9 @@
 package com.example.DailySelfie;
 
+import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -77,7 +79,53 @@ public class MainActivity extends ListActivity {
             }
         });
 
+        selfieListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
 
+                final CharSequence[] options = {"Open", "Delete", "Cancel"};
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setTitle(R.string.options_title)
+                        .setItems(options, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                if (options[which].equals("Open")) {
+
+                                    Intent intent = new Intent();
+                                    intent.setAction(Intent.ACTION_VIEW);
+                                    SelfieItem selfieItem = (SelfieItem) mAdapter.getItem(position);
+
+                                    intent.setDataAndType(Uri.parse("file://" + selfieItem.getText()), "image/*");
+                                    startActivity(intent);
+
+                                } else if (options[which].equals("Delete")) {
+
+                                    mAdapter.delete(position);
+                                    int size = mAdapter.getCount();
+
+                                    sharedPref = getPreferences(Context.MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = sharedPref.edit();
+                                    editor.clear();
+                                    editor.putInt("size", mAdapter.getCount());
+
+                                    for (int i=0; i< size; i++) {
+
+                                        SelfieItem selfieItem = (SelfieItem) mAdapter.getItem(i);
+                                        editor.putString(i + "", selfieItem.getText());
+                                        editor.putString(i + "_Name", selfieItem.getName());
+                                    }
+
+                                    editor.commit();
+
+                                } else if (options[position].equals("Cancel")){
+                                    dialog.dismiss();
+                                }
+                            }
+                        });
+                builder.show();
+                return false;
+            }
+        });
     }
 
     private void init() {

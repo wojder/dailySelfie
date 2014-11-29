@@ -6,4 +6,6 @@
     <string name="album_name">selfiesAlbum</string>
     <string name="unknowPath">This path is unknow</string>
     <string name="unknownPath">This path is unknow\\</string>
+    <string name="options_title">Selfie options</string>
+    <string name="hit">Open</string>
 </resources>
