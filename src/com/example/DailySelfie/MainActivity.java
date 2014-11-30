@@ -58,6 +58,8 @@ public class MainActivity extends ListActivity {
     private AlarmManager alarmManager;
     private PendingIntent notificationPendingIntent;
     private Intent notificationReciver;
+    private final CharSequence[] options = new CharSequence[]{"Open", "Delete", "Cancel"};
+    private final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -76,45 +78,95 @@ public class MainActivity extends ListActivity {
         selfieListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                try {
-                    Intent selfieIntent = new Intent();
-                    selfieIntent.setAction(Intent.ACTION_VIEW);
-                    SelfieItem selfie = (SelfieItem) mAdapter.getItem(position);
-                    selfieIntent.setDataAndType(Uri.parse("file://" + selfie.getText()), "image/*");
-                    startActivity(selfieIntent);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
+                selfieClicker(position);
             }
         });
 
         selfieListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> arg0, View arg1, final int position, long arg3) {
-
-                final CharSequence[] options = {"Open", "Delete", "Cancel"};
-                final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                builder.setTitle(R.string.options_title)
-                        .setItems(options, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-
-                                if (options[which].equals("Open")) {
-                                    handlingOpenOption(position);
-                                } else if (options[which].equals("Delete")) {
-                                    handlingDeleteOption(position);
-                                } else if (options[which ].equals("Cancel")) {
-                                    dialog.dismiss();
-                                }
-                            }
-                        });
-                builder.show();
-                return false;
+                return dialogBuilder(position);
             }
         });
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.photo_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.camera_icon:
+
+                dispatchTakePictureIntent();
+
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        //check the result is correct capture image
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            handleSmallSelfie(data);
+        }
+        super.onActivityResult(requestCode, resultCode, data );
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+
+        outState.putBoolean(IMAGE_VISIBILITY_KEY, (selfieBitmap !=null));
+        outState.putParcelable("file_uri", fileUri);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        fileUri = savedInstanceState.getParcelable("file_uri");
+    }
+
+    private void selfieClicker(int position) {
+        try {
+            Intent selfieIntent = new Intent();
+            selfieIntent.setAction(Intent.ACTION_VIEW);
+            SelfieItem selfie = (SelfieItem) mAdapter.getItem(position);
+            selfieIntent.setDataAndType(Uri.parse("file://" + selfie.getText()), "image/*");
+            startActivity(selfieIntent);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private boolean dialogBuilder(final int position) {
+        builder.setTitle(R.string.options_title)
+                .setItems(options, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        if (options[which].equals("Open")) {
+                            handlingOpenOption(position);
+                        } else if (options[which].equals("Delete")) {
+                            handlingDeleteOption(position);
+                        } else if (options[which ].equals("Cancel")) {
+                            dialog.dismiss();
+                        }
+                    }
+                });
+        builder.show();
+        return false;
+    }
 
     private void handlingOpenOption(int position) {
         Intent intent = new Intent();
@@ -139,9 +191,7 @@ public class MainActivity extends ListActivity {
             SelfieItem selfieItem = (SelfieItem) mAdapter.getItem(i);
             editor.putString(i + "", selfieItem.getText());
             editor.putString(i + "_Name", selfieItem.getName());
-
         }
-
         editor.commit();
     }
 
@@ -160,7 +210,6 @@ public class MainActivity extends ListActivity {
         int size = sharedPref.getInt("size", 0);
 
         optymalizerChecker(size);
-
     }
 
     private void optymalizerChecker(int size) {
@@ -184,14 +233,6 @@ public class MainActivity extends ListActivity {
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.photo_menu, menu);
-        return true;
-    }
-
     private File createImageFile() throws IOException {
         String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String selfieFileName = JPG_PREFIX + timestamp + "_";
@@ -209,20 +250,6 @@ public class MainActivity extends ListActivity {
         return setUpselfie;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch (item.getItemId()) {
-            case R.id.camera_icon:
-
-                dispatchTakePictureIntent();
-
-                return true;
-            default:
-                return false;
-        }
-    }
-
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         File setUpselfie = null;
@@ -237,19 +264,7 @@ public class MainActivity extends ListActivity {
             setUpselfie = null;
             selectedImagePath = null;
         }
-
         startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        //check the result is correct capture image
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            handleSmallSelfie(data);
-        }
-
-        super.onActivityResult(requestCode, resultCode, data );
     }
 
     private void handleSmallSelfie(Intent intent) {
@@ -260,11 +275,7 @@ public class MainActivity extends ListActivity {
             galleryAddPic();
             selectedImagePath =null;
         }
-
     }
-
-
-//decodeFile method
 
     public void decodeFile() {
 
@@ -279,7 +290,6 @@ public class MainActivity extends ListActivity {
         mAdapter.add(selfieItem);
 
         editorHelper();
-
 }
 
     private void editorHelper() {
@@ -294,7 +304,6 @@ public class MainActivity extends ListActivity {
         outWidth = options.outWidth;
         height = options.outHeight;
 
-
         if ((targetWid > 0) || (targetHeight > 0)) {
             scaleFactor = Math.min(outWidth / targetWid, height / targetHeight);
         }
@@ -305,35 +314,15 @@ public class MainActivity extends ListActivity {
     }
 
     private File getAlbumDir() {
-
         File selfieDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-
         return selfieDir;
     }
 
     private void galleryAddPic(){
-
         Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
         File f = new File(selectedImagePath);
         Uri contentUri = Uri.fromFile(f);
         mediaScanIntent.setData(contentUri);
         this.sendBroadcast(mediaScanIntent);
-
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-
-        outState.putBoolean(IMAGE_VISIBILITY_KEY, (selfieBitmap !=null));
-        outState.putParcelable("file_uri", fileUri);
-        super.onSaveInstanceState(outState);
-
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-
-        fileUri = savedInstanceState.getParcelable("file_uri");
     }
 }

@@ -18,7 +18,6 @@ import java.util.Date;
  */
 public class AlarmReceiverNotification extends BroadcastReceiver {
 
-
     private static final int NOTIFICATION_ID = 1;
     private static final String TAG = "Selfie Alarm Notfication Receiver";
     private Intent selfieNotificationIntent;

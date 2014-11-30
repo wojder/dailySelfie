@@ -20,13 +20,11 @@ public class SelfieAdapter extends BaseAdapter {
     private static LayoutInflater inflater = null;
 
     private static class ViewHolder {
-
         ImageView photo;
         TextView name;
     }
 
     public SelfieAdapter(Context context) {
-
         mContext = context;
         inflater = LayoutInflater.from(mContext);
     }
@@ -51,7 +49,7 @@ public class SelfieAdapter extends BaseAdapter {
         View newView = convertView;
         ViewHolder holder;
 
-        SelfieItem curr = selfieItems.get(position);
+        SelfieItem selfieItem = selfieItems.get(position);
 
         if (convertView == null) {
 
@@ -61,12 +59,10 @@ public class SelfieAdapter extends BaseAdapter {
             holder.name = (TextView) newView.findViewById(R.id.text_item);
             newView.setTag(holder);
         } else {
-
             holder = (ViewHolder) newView.getTag();
-
         }
-        holder.photo.setImageBitmap(curr.getBitmap());
-        holder.name.setText(curr.getName());
+        holder.photo.setImageBitmap(selfieItem.getBitmap());
+        holder.name.setText(selfieItem.getName());
 
         return newView;
     }

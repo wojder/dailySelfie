@@ -11,7 +11,6 @@ public class SelfieItem {
         String mText, mName;
         Bitmap mBitmap;
 
-
     public SelfieItem(Bitmap bm, String text, String name) {
 
         this.mBitmap = bm;

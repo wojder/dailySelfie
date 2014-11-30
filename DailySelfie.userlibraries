@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eclipse-userlibraries>
+  <library name="android-support-v7-appcompat">
+    <archive path="/home/wojder/Desktop/adt/sdk/extras/android/support/v7/appcompat/libs/android-support-v7-appcompat.jar" />
+    <archive path="/home/wojder/Desktop/adt/sdk/extras/android/support/v7/appcompat/libs/android-support-v4.jar" />
+  </library>
+</eclipse-userlibraries>
+
