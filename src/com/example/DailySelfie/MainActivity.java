@@ -80,7 +80,7 @@ public class MainActivity extends ListActivity {
                     Intent selfieIntent = new Intent();
                     selfieIntent.setAction(Intent.ACTION_VIEW);
                     SelfieItem selfie = (SelfieItem) mAdapter.getItem(position);
-                    selfieIntent.setDataAndType(Uri.parse("file://"  + selfie.getText()), "image/*");
+                    selfieIntent.setDataAndType(Uri.parse("file://" + selfie.getText()), "image/*");
                     startActivity(selfieIntent);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -91,7 +91,7 @@ public class MainActivity extends ListActivity {
 
         selfieListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+            public boolean onItemLongClick(AdapterView<?> arg0, View arg1, final int position, long arg3) {
 
                 final CharSequence[] options = {"Open", "Delete", "Cancel"};
                 final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
@@ -99,48 +99,12 @@ public class MainActivity extends ListActivity {
                         .setItems(options, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+
                                 if (options[which].equals("Open")) {
-
-                                    Intent intent = new Intent();
-                                    intent.setAction(Intent.ACTION_VIEW);
-                                    SelfieItem selfieItem = (SelfieItem) mAdapter.getItem(position);
-
-                                    intent.setDataAndType(Uri.parse("file://" + selfieItem.getText()), "image/*");
-                                    startActivity(intent);
-
+                                    handlingOpenOption(position);
                                 } else if (options[which].equals("Delete")) {
-
-                                    builder.setPositiveButton(R.string.sure, new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-
-                                            mAdapter.delete(position);
-                                            int size = mAdapter.getCount();
-
-                                            sharedPref = getPreferences(Context.MODE_PRIVATE);
-                                            SharedPreferences.Editor editor = sharedPref.edit();
-                                            editor.clear();
-                                            editor.putInt("size", mAdapter.getCount());
-
-                                            for (int i = 0; i < size; i++) {
-
-                                                SelfieItem selfieItem = (SelfieItem) mAdapter.getItem(i);
-                                                editor.putString(i + "", selfieItem.getText());
-                                                editor.putString(i + "_Name", selfieItem.getName());
-
-                                            }
-
-                                            editor.commit();
-
-                                        }})
-                                            .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                                                @Override
-                                                public void onClick(DialogInterface dialog, int which) {
-                                                    dialog.dismiss();
-                                                }
-                                            });
-
-                                } else if (options[position].equals("Cancel")){
+                                    handlingDeleteOption(position);
+                                } else if (options[which ].equals("Cancel")) {
                                     dialog.dismiss();
                                 }
                             }
@@ -149,6 +113,36 @@ public class MainActivity extends ListActivity {
                 return false;
             }
         });
+    }
+
+
+    private void handlingOpenOption(int position) {
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_VIEW);
+        SelfieItem selfieItem = (SelfieItem) mAdapter.getItem(position);
+
+        intent.setDataAndType(Uri.parse("file://" + selfieItem.getText()), "image/*");
+        startActivity(intent);
+    }
+
+    private void handlingDeleteOption(int position) {
+        mAdapter.delete(position);
+        int size = mAdapter.getCount();
+
+        sharedPref = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.clear();
+        editor.putInt("size", mAdapter.getCount());
+
+        for (int i = 0; i < size; i++) {
+
+            SelfieItem selfieItem = (SelfieItem) mAdapter.getItem(i);
+            editor.putString(i + "", selfieItem.getText());
+            editor.putString(i + "_Name", selfieItem.getName());
+
+        }
+
+        editor.commit();
     }
 
     private void createAlarm() {

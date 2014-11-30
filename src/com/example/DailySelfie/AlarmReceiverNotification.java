@@ -33,25 +33,28 @@ public class AlarmReceiverNotification extends BroadcastReceiver {
 
         selfieNotificationIntent = new Intent(context, MainActivity.class);
 
-        selfieNotificationPendingIntent = PendingIntent.getBroadcast(context, 0, selfieNotificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        selfieNotificationPendingIntent = PendingIntent.getBroadcast(context, 0, selfieNotificationIntent, Intent.FLAG_ACTIVITY_NEW_TASK);
 
-        Uri uriSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-
-        Notification.Builder notificationBuilder = new Notification.Builder(context)
-                .setTicker(tickerText)
-                .setSmallIcon(R.drawable.ic_menu_camera)
-                .setAutoCancel(true)
-                .setContentTitle(notificationTitle)
-                .setContentText(notificationContent)
-                .setContentIntent(selfieNotificationPendingIntent)
-                .setSound(uriSound)
-                .setVibrate(vibratePattern);
-
+        Notification.Builder notificationBuilder = NotificationBuilderHelper(context);
 
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
         notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
 
         Log.i(TAG, "Sending notification at: " + DateFormat.getDateTimeInstance().format(new Date()));
+    }
+
+    private Notification.Builder NotificationBuilderHelper(Context context) {
+        Uri uriSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+
+        return new Notification.Builder(context)
+                .setTicker(tickerText)
+                .setSmallIcon(R.drawable.ic_launcher)
+                .setAutoCancel(true)
+                .setContentTitle(notificationTitle)
+                .setContentText(notificationContent)
+                .setContentIntent(selfieNotificationPendingIntent)
+                .setSound(uriSound)
+                .setVibrate(vibratePattern);
     }
 }

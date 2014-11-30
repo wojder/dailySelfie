@@ -3,13 +3,13 @@
           package="com.example.DailySelfie"
           android:versionCode="1"
           android:versionName="1.0">
-    <uses-sdk android:minSdkVersion="16"/>
+    <uses-sdk android:minSdkVersion="13"/>
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-feature android:name="android.hardware.camera"
-            android:required="true"/>
+                  android:required="true"/>
     <action android:name="android.media.action.IMAGE_CAPTURE" />
     <category android:name="android.intent.category.DEFAULT" />
         <application android:label="@string/app_name"
@@ -22,5 +22,7 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+            <receiver android:name=".AlarmReceiverNotification" >
+            </receiver>
     </application>
 </manifest>

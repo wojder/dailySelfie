@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="CustomTheme" parent="android:Theme.Holo.Light">
-        <item name="android:icon">@android:drawable/btn_star</item>
+        <item name="android:icon">@drawable/ic_launcher</item>
     </style>
-
 </resources>

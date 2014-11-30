@@ -10,4 +10,6 @@
     <string name="hit">Open</string>
     <string name="sure">Are You sure?</string>
     <string name="cancel">Cancel</string>
+    <string name="confirm">Confirm deletion</string>
+    <string name="message_confirm">Are You sure to delete selfie?</string>
 </resources>
