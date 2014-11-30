@@ -1,7 +1,9 @@
 package com.example.DailySelfie;
 
+import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,6 +13,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -35,6 +38,7 @@ public class MainActivity extends ListActivity {
     private static final String JPG_PREFIX = "IMG_";
     private static final String JPG_SUFFIX = ".jpg";
     private static final String IMAGE_VISIBILITY_KEY = "imageviewvisibility";
+    private static final long INITIAL_DELAY = 2*60*1000L;
 
     //fields
     String mName, selectedImagePath;
@@ -51,10 +55,16 @@ public class MainActivity extends ListActivity {
     private int height;
     private int outWidth;
     private ListView selfieListView;
+    private AlarmManager alarmManager;
+    private PendingIntent notificationPendingIntent;
+    private Intent notificationReciver;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        createAlarm();
+
         this.selfieView = (ImageView) this.findViewById(R.id.photoView);
         selfieListView = getListView();
         mAdapter = new SelfieAdapter(getApplicationContext());
@@ -84,7 +94,7 @@ public class MainActivity extends ListActivity {
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
 
                 final CharSequence[] options = {"Open", "Delete", "Cancel"};
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                 builder.setTitle(R.string.options_title)
                         .setItems(options, new DialogInterface.OnClickListener() {
                             @Override
@@ -100,22 +110,35 @@ public class MainActivity extends ListActivity {
 
                                 } else if (options[which].equals("Delete")) {
 
-                                    mAdapter.delete(position);
-                                    int size = mAdapter.getCount();
+                                    builder.setPositiveButton(R.string.sure, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
 
-                                    sharedPref = getPreferences(Context.MODE_PRIVATE);
-                                    SharedPreferences.Editor editor = sharedPref.edit();
-                                    editor.clear();
-                                    editor.putInt("size", mAdapter.getCount());
+                                            mAdapter.delete(position);
+                                            int size = mAdapter.getCount();
 
-                                    for (int i=0; i< size; i++) {
+                                            sharedPref = getPreferences(Context.MODE_PRIVATE);
+                                            SharedPreferences.Editor editor = sharedPref.edit();
+                                            editor.clear();
+                                            editor.putInt("size", mAdapter.getCount());
 
-                                        SelfieItem selfieItem = (SelfieItem) mAdapter.getItem(i);
-                                        editor.putString(i + "", selfieItem.getText());
-                                        editor.putString(i + "_Name", selfieItem.getName());
-                                    }
+                                            for (int i = 0; i < size; i++) {
 
-                                    editor.commit();
+                                                SelfieItem selfieItem = (SelfieItem) mAdapter.getItem(i);
+                                                editor.putString(i + "", selfieItem.getText());
+                                                editor.putString(i + "_Name", selfieItem.getName());
+
+                                            }
+
+                                            editor.commit();
+
+                                        }})
+                                            .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    dialog.dismiss();
+                                                }
+                                            });
 
                                 } else if (options[position].equals("Cancel")){
                                     dialog.dismiss();
@@ -126,6 +149,15 @@ public class MainActivity extends ListActivity {
                 return false;
             }
         });
+    }
+
+    private void createAlarm() {
+
+        alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        notificationReciver = new Intent(MainActivity.this, AlarmReceiverNotification.class);
+        notificationPendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, notificationReciver, 0);
+
+        alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + INITIAL_DELAY, INITIAL_DELAY, notificationPendingIntent);
     }
 
     private void init() {

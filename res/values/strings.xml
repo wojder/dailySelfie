@@ -8,4 +8,6 @@
     <string name="unknownPath">This path is unknow\\</string>
     <string name="options_title">Selfie options</string>
     <string name="hit">Open</string>
+    <string name="sure">Are You sure?</string>
+    <string name="cancel">Cancel</string>
 </resources>
