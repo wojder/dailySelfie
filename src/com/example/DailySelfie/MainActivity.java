@@ -58,8 +58,6 @@ public class MainActivity extends ListActivity {
     private AlarmManager alarmManager;
     private PendingIntent notificationPendingIntent;
     private Intent notificationReciver;
-    private final CharSequence[] options = new CharSequence[]{"Open", "Delete", "Cancel"};
-    private final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -85,7 +83,24 @@ public class MainActivity extends ListActivity {
         selfieListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> arg0, View arg1, final int position, long arg3) {
-                return dialogBuilder(position);
+                final CharSequence[] options = {"Open", "Delete", "Cancel"};
+                final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setTitle(R.string.options_title)
+                        .setItems(options, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                if (options[which].equals("Open")) {
+                handlingOpenOption(position);
+                } else if (options[which].equals("Delete")) {
+                handlingDeleteOption(position);
+                } else if (options[which ].equals("Cancel")) {
+                dialog.dismiss();
+                }
+                }
+                });
+                builder.show();
+                return false;
             }
         });
     }
@@ -147,25 +162,6 @@ public class MainActivity extends ListActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    private boolean dialogBuilder(final int position) {
-        builder.setTitle(R.string.options_title)
-                .setItems(options, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        if (options[which].equals("Open")) {
-                            handlingOpenOption(position);
-                        } else if (options[which].equals("Delete")) {
-                            handlingDeleteOption(position);
-                        } else if (options[which ].equals("Cancel")) {
-                            dialog.dismiss();
-                        }
-                    }
-                });
-        builder.show();
-        return false;
     }
 
     private void handlingOpenOption(int position) {
